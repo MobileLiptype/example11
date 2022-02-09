@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="./assets/w3.css">
+        <link rel="shortcut icon" href="./assets/favicon.ico" type="image/x-icon">
+        <title>WebSocket Web Client</title>
+    </head>
+    <body>
+        
+
+        <pre id="messages" style="width: 90%; margin-left: 5%; height: 200px; overflow: scroll">
+        </pre>
+        <input type="text" id="messageBox" placeholder="Type your message here" 
+            style="display: block; width: 90%; margin-bottom: 10px; margin-left: 5%; padding: 10px;" />
+        <!-- <button id="send" title="Send Message!" style="width: 90%; margin-left: 5%; height: 30px;">
+            Send Message
+        </button> -->
+        <!-- <button id="sendnew" title="this" style="width: 90%; margin-left: 5%; height: 30px;">
+            this
+        </button> -->
+
+        <div class="row">
+        <div class="column">
+            <h2>Input</h2>
+      <ol>
+            <li><p><input type="text" size="30" value="this is a very good idea">
+          <button id="button1">Send</button>
+          </p></li>
+
+          <li><p><input type="text" size="30" value="my watch fell in the water">
+          <button id="button2">Send</button>
+          </p></li>
+      
+      </ol>
+        </div>
+        <div class="column">
+      <h2>Output</h2>
+      <ol>
+            <li><p><input type="text" size="30" value="ths s a vriy gd dea">
+          <button id="buttonn1">Send</button>
+          </p></li>
+          <li><p><input type="text" size="30" value="mi wtch fel in the water">
+          <button id="buttonn2">Send</button>
+          </p></li>
+      
+      
+      </ol>
+        </div>
+    </div>
+
+        <script>
+            if ("WebSocket" in window) {
+                
+                const sendBtn1 = document.querySelector('#button1');
+                const sendBtn2 = document.querySelector('#buttonn1');
+                const sendBtn3 = document.querySelector('#button2');
+                const sendBtn4 = document.querySelector('#buttonn2');
+                const messages = document.querySelector('#messages');
+                const messageBox = document.querySelector('#messageBox');
+                
+                function showMessage(message) {
+                    var newtext = "this is a very good idea"//new value
+     sendBtn1.value = newtext;
+                }
+function showMessage1(message) {
+
+                    var newtext = "ths s a vriy gd dea"//new value
+     sendBtn2.value = newtext;
+                }
+
+                function showMessage2(message) {
+
+                    var newtext = "my watch fell in the water"//new value
+     sendBtn2.value = newtext;
+                }
+
+                function showMessage3(message) {
+
+                    var newtext = "mi wtch fel in the water"//new value
+     sendBtn2.value = newtext;
+                }
+                let ws = new WebSocket("ws://localhost:8082");
+
+                ws.onopen = function() {
+                    console.log("Connected to Server"); 
+                };
+
+                sendBtn1.onclick = function() {
+                    if (ws) {
+                        ws.send("this is a very good idea");
+                        showMessage(`${messageBox.value}`);
+                    } else {
+                        alert("ERROR: Not connected... refresh to try again!");
+                    }
+                }
+                sendBtn2.onclick = function() {
+                    if (ws) {
+                        ws.send("ths s a vriy gd dea");
+                        showMessage1(`${messageBox.value}`);
+                    } else {
+                        alert("ERROR: Not connected... refresh to try again!");
+                    }
+                }
+sendBtn3.onclick = function() {
+                    if (ws) {
+                        ws.send("my watch fell in the water");
+                        showMessage2(`${messageBox.value}`);
+                    } else {
+                        alert("ERROR: Not connected... refresh to try again!");
+                    }
+                }
+                sendBtn4.onclick = function() {
+                    if (ws) {
+                        ws.send("mi wtch fel in the water");
+                        showMessage3(`${messageBox.value}`);
+                    } else {
+                        alert("ERROR: Not connected... refresh to try again!");
+                    }
+                }
+
+                ws.onmessage = function ({data}) { 
+                    showMessage(`${data}`);
+                };
+
+                ws.onclose = function() { 
+                    ws = null;
+                    alert("Connection closed... refresh to try again!"); 
+                };
+
+            } else {
+                alert("WebSocket NOT supported by your Browser!");
+            }
+        </script>
+    </body>
+</html>
